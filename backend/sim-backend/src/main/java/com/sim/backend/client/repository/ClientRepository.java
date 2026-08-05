@@ -1,0 +1,21 @@
+package com.sim.backend.client.repository;
+
+import com.sim.backend.client.entity.Client;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+public interface ClientRepository {
+
+    Client save(Client client);
+
+    Optional<Client> findById(UUID id);
+
+    List<Client> findAll();
+
+    void deleteById(UUID id);
+
+    boolean existsByDocumentNumber(String documentNumber);
+
+}
