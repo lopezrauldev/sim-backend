@@ -1,5 +1,7 @@
 package com.sim.backend.quote.entity;
 
+import com.sim.backend.shared.kernel.Unit;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -65,9 +67,51 @@ public class Quote {
     }
 
     public void addItem(QuoteItem item) {
+        ensureEditable();
         Objects.requireNonNull(item, "El item es obligatorio");
-
         items.add(item);
+    }
+
+    public void removeItem(UUID itemId) {
+        ensureEditable();
+        Objects.requireNonNull(itemId,"El id del item es obligatorio");
+        boolean removed = items.removeIf(item -> item.getId().equals(itemId));
+
+        if (!removed) {
+            throw new IllegalArgumentException("El item no pertenece a la cotización");
+        }
+    }
+
+    public void changeItemDescription(
+            UUID itemId,
+            String description
+    ) {
+        ensureEditable();
+        findItem(itemId).changeDescription(description);
+    }
+
+    public void changeItemUnit(
+            UUID itemId,
+            Unit unit
+    ) {
+        ensureEditable();
+        findItem(itemId).changeUnit(unit);
+    }
+
+    public void changeItemQuantity(
+            UUID itemId,
+            BigDecimal quantity
+    ) {
+        ensureEditable();
+        findItem(itemId).changeQuantity(quantity);
+    }
+
+    public void changeItemUnitPrice(
+            UUID itemId,
+            BigDecimal unitPrice
+    ) {
+        ensureEditable();
+        findItem(itemId).changeUnitPrice(unitPrice);
     }
 
     public BigDecimal getSubtotal() {
@@ -87,6 +131,13 @@ public class Quote {
     }
 
     public void cancel() {
+
+        if (status == QuoteStatus.CANCELED) {
+            throw new IllegalStateException(
+                    "La cotización ya está cancelada"
+            );
+        }
+
         this.status = QuoteStatus.CANCELED;
     }
 
@@ -96,6 +147,48 @@ public class Quote {
         }
 
         return value.trim();
+    }
+
+    private QuoteItem findItem(UUID itemId) {
+        Objects.requireNonNull(
+                itemId,
+                "El id del item es obligatorio"
+        );
+
+        return items.stream()
+                .filter(item -> item.getId().equals(itemId))
+                .findFirst()
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "El item no pertenece a la cotización"
+                        )
+                );
+    }
+
+    private void ensureEditable() {
+        if (status == QuoteStatus.CANCELED) {
+            throw new IllegalStateException(
+                    "La cotización cancelada no puede modificarse"
+            );
+        }
+    }
+
+    public void replaceItems(List<QuoteItem> newItems) {
+        ensureEditable();
+
+        Objects.requireNonNull(
+                newItems,
+                "Los items son obligatorios"
+        );
+
+        if (newItems.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "La cotización debe tener al menos un item"
+            );
+        }
+
+        items.clear();
+        items.addAll(newItems);
     }
 
     public UUID getId() {

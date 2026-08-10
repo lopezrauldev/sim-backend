@@ -25,13 +25,32 @@ public class QuoteRepositoryAdapter implements QuoteRepository {
     @Override
     public Quote save(Quote quote) {
 
-        QuoteJpaEntity entity =
-                QuotePersistenceMapper.toJpaEntity(quote);
+        Optional<QuoteJpaEntity> existingEntity =
+                repository.findById(quote.getId());
+
+        QuoteJpaEntity entity;
+
+        if (existingEntity.isPresent()) {
+
+            entity = existingEntity.get();
+
+            QuotePersistenceMapper.updateJpaEntity(
+                    quote,
+                    entity
+            );
+
+        } else {
+
+            entity = QuotePersistenceMapper.toJpaEntity(
+                    quote
+            );
+        }
 
         QuoteJpaEntity savedEntity =
                 repository.save(entity);
 
         return QuotePersistenceMapper.toDomain(savedEntity);
+
     }
 
     @Override

@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.sim.backend.quote.dto.QuoteUpdateRequest;
 
 import java.util.List;
 import java.util.UUID;
@@ -45,6 +46,16 @@ public class QuoteController {
     public ResponseEntity<List<QuoteResponse>> findAll() {
         return ResponseEntity.ok(
                 quoteService.findAll()
+        );
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<QuoteResponse> update(
+            @PathVariable UUID id,
+            @Valid @RequestBody QuoteUpdateRequest request
+    ) {
+        return ResponseEntity.ok(
+                quoteService.update(id, request)
         );
     }
 

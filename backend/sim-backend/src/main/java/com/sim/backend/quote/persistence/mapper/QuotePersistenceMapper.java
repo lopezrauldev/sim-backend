@@ -70,4 +70,18 @@ public final class QuotePersistenceMapper {
                 entity.getUnitPrice()
         );
     }
+
+    public static void updateJpaEntity(
+            Quote quote,
+            QuoteJpaEntity entity
+    ) {
+        entity.changeStatus(quote.getStatus());
+
+        List<QuoteItemJpaEntity> items = quote.getItems()
+                .stream()
+                .map(QuotePersistenceMapper::toItemJpaEntity)
+                .toList();
+
+        entity.replaceItems(items);
+    }
 }

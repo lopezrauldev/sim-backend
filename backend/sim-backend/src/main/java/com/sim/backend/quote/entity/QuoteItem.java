@@ -57,6 +57,28 @@ public class QuoteItem {
         );
     }
 
+    public void changeDescription(String description) {
+        this.description = requireText(
+                description,
+                "La descripción es obligatoria"
+        );
+    }
+
+    public void changeUnit(Unit unit) {
+        this.unit = Objects.requireNonNull(
+                unit,
+                "La unidad es obligatoria"
+        );
+    }
+
+    public void changeQuantity(BigDecimal quantity) {
+        this.quantity = validateQuantity(quantity);
+    }
+
+    public void changeUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = validateUnitPrice(unitPrice);
+    }
+
     public BigDecimal getSubtotal() {
         return quantity.multiply(unitPrice);
     }

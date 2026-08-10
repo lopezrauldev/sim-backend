@@ -9,9 +9,12 @@ import com.sim.backend.quote.dto.QuoteResponse;
 import com.sim.backend.quote.entity.Quote;
 import com.sim.backend.quote.entity.QuoteItem;
 import com.sim.backend.quote.mapper.QuoteMapper;
+import com.sim.backend.quote.repository.QuoteNumberGenerator;
 import com.sim.backend.quote.repository.QuoteRepository;
 import com.sim.backend.shared.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import com.sim.backend.quote.dto.QuoteUpdateRequest;
+import java.util.ArrayList;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,15 +25,18 @@ public class DefaultQuoteService implements QuoteService {
     private final QuoteRepository quoteRepository;
     private final ClientRepository clientRepository;
     private final ProductRepository productRepository;
+    private final QuoteNumberGenerator quoteNumberGenerator;
 
     public DefaultQuoteService(
             QuoteRepository quoteRepository,
             ClientRepository clientRepository,
-            ProductRepository productRepository
+            ProductRepository productRepository,
+            QuoteNumberGenerator quoteNumberGenerator
     ) {
         this.quoteRepository = quoteRepository;
         this.clientRepository = clientRepository;
         this.productRepository = productRepository;
+        this.quoteNumberGenerator = quoteNumberGenerator;
     }
 
     @Override
@@ -44,7 +50,7 @@ public class DefaultQuoteService implements QuoteService {
                         )
                 );
 
-        String number = generateQuoteNumber();
+        String number = quoteNumberGenerator.nextNumber();
 
         Quote quote = Quote.create(
                 number,
@@ -107,6 +113,57 @@ public class DefaultQuoteService implements QuoteService {
     }
 
     @Override
+    public QuoteResponse update(
+            UUID id,
+            QuoteUpdateRequest request
+    ) {
+
+        Quote quote = quoteRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Cotización no encontrada con id: " + id
+                        )
+                );
+
+        List<QuoteItem> newItems = new ArrayList<>();
+
+        for (QuoteItemRequest itemRequest : request.items()) {
+
+            Product product = productRepository
+                    .findById(itemRequest.productId())
+                    .orElseThrow(() ->
+                            new ResourceNotFoundException(
+                                    "Producto no encontrado con id: "
+                                            + itemRequest.productId()
+                            )
+                    );
+
+            if (!product.isActive()) {
+                throw new IllegalArgumentException(
+                        "El producto está inactivo: "
+                                + product.getName()
+                );
+            }
+
+            QuoteItem item = QuoteItem.create(
+                    product.getId(),
+                    product.getName(),
+                    product.getUnit(),
+                    itemRequest.quantity(),
+                    product.getUnitPrice()
+            );
+
+            newItems.add(item);
+        }
+
+        quote.replaceItems(newItems);
+
+        Quote savedQuote = quoteRepository.save(quote);
+
+        return QuoteMapper.toResponse(savedQuote);
+    }
+
+    @Override
     public QuoteResponse cancel(UUID id) {
 
         Quote quote = quoteRepository.findById(id)
@@ -121,13 +178,5 @@ public class DefaultQuoteService implements QuoteService {
         Quote savedQuote = quoteRepository.save(quote);
 
         return QuoteMapper.toResponse(savedQuote);
-    }
-
-    private String generateQuoteNumber() {
-
-        return "COT-" + UUID.randomUUID()
-                .toString()
-                .substring(0, 8)
-                .toUpperCase();
     }
 }

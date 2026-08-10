@@ -57,6 +57,18 @@ public class QuoteJpaEntity {
         item.setQuote(this);
     }
 
+    public void replaceItems(List<QuoteItemJpaEntity> newItems) {
+        items.clear();
+
+        for (QuoteItemJpaEntity item : newItems) {
+            addItem(item);
+        }
+    }
+
+    public void changeStatus(QuoteStatus status) {
+        this.status = status;
+    }
+
     public UUID getId() {
         return id;
     }
