@@ -1,0 +1,11 @@
+<h1>Clientes</h1>
+
+@for (client of clients(); track client.id) {
+  <div>
+    <strong>{{ client.documentNumber }}</strong>
+    -
+    {{ client.name || client.businessName }}
+  </div>
+} @empty {
+  <p>No hay clientes registrados.</p>
+}
