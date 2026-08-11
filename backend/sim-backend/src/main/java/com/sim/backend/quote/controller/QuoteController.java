@@ -3,6 +3,7 @@ package com.sim.backend.quote.controller;
 import com.sim.backend.quote.dto.QuoteRequest;
 import com.sim.backend.quote.dto.QuoteResponse;
 import com.sim.backend.quote.service.QuoteService;
+import com.sim.backend.quote.dto.QuoteMaterialResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,16 @@ public class QuoteController {
 
     public QuoteController(QuoteService quoteService) {
         this.quoteService = quoteService;
+    }
+
+    @GetMapping("/{id}/materials")
+    public ResponseEntity<List<QuoteMaterialResponse>> getRequiredMaterials(
+            @PathVariable UUID id
+    ) {
+
+        return ResponseEntity.ok(
+                quoteService.getRequiredMaterials(id)
+        );
     }
 
     @PostMapping

@@ -1,5 +1,6 @@
 package com.sim.backend.quote.service;
 
+import com.sim.backend.quote.dto.QuoteMaterialResponse;
 import com.sim.backend.quote.dto.QuoteRequest;
 import com.sim.backend.quote.dto.QuoteResponse;
 import com.sim.backend.quote.dto.QuoteUpdateRequest;
@@ -18,4 +19,6 @@ public interface QuoteService {
     QuoteResponse cancel(UUID id);
 
     QuoteResponse update(UUID id, QuoteUpdateRequest request);
+
+    List<QuoteMaterialResponse> getRequiredMaterials(UUID quoteId);
 }
