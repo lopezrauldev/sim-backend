@@ -1,0 +1,94 @@
+:host {
+  display: block;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+h1 {
+  margin-bottom: 24px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+fieldset {
+  border: 1px solid #d8d8d8;
+  border-radius: 8px;
+  padding: 20px;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 24px;
+}
+
+legend {
+  padding: 0 8px;
+  font-weight: 600;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+input,
+select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+
+  border: 1px solid #bdbdbd;
+  border-radius: 6px;
+
+  font: inherit;
+}
+
+input:focus,
+select:focus {
+  outline: 2px solid #555;
+  outline-offset: 1px;
+}
+
+small {
+  display: block;
+  margin-top: 4px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: 1px solid #999;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+@media (max-width: 700px) {
+  :host {
+    padding: 16px;
+  }
+
+  fieldset {
+    grid-template-columns: 1fr;
+  }
+
+  .field-error {
+    grid-column: 1;
+  }
+}
+
+.field-error {
+  grid-column: 2;
+  margin-top: -10px;
+  font-size: 0.85rem;
+}

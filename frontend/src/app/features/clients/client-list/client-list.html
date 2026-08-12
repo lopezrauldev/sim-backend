@@ -1,10 +1,23 @@
 <h1>Clientes</h1>
 
+<a routerLink="/clients/new">Nuevo cliente</a>
+
 @for (client of clients(); track client.id) {
   <div>
     <strong>{{ client.documentNumber }}</strong>
     -
     {{ client.name || client.businessName }}
+
+    <button
+      type="button"
+      [routerLink]="['/clients', client.id, 'edit']">
+      EDITAR
+    </button>
+    <button
+      type="button"
+      (click)="deactivateClient(client.id)">
+      DESACTIVAR
+    </button>
   </div>
 } @empty {
   <p>No hay clientes registrados.</p>

@@ -1,0 +1,144 @@
+<h1>
+  {{ clientId ? 'Editar cliente' : 'Nuevo cliente' }}
+</h1>
+
+<form [formGroup]="clientForm" (ngSubmit)="save()">
+
+  <fieldset>
+    <legend>Datos principales</legend>
+
+  <label for="type">Tipo de cliente</label>
+  <select id="type" formControlName="type">
+    <option value="">Seleccione</option>
+    <option value="PERSONA">Persona</option>
+    <option value="EMPRESA">Empresa</option>
+  </select>
+
+<label for="documentNumber">
+  {{ clientForm.controls.type.value === 'EMPRESA' ? 'RUC' : 'DNI' }}
+</label>
+
+<input
+  id="documentNumber"
+  type="text"
+  formControlName="documentNumber"
+>
+@if (
+  clientForm.controls.documentNumber.invalid &&
+  clientForm.controls.documentNumber.touched
+) {
+
+  @if (clientForm.controls.documentNumber.hasError('required')) {
+    <small class="field-error">El número de documento es obligatorio.</small>
+  }
+
+  @if (
+    clientForm.controls.documentNumber.hasError('pattern') &&
+    clientForm.controls.type.value === 'PERSONA'
+  ) {
+    <small class="field-error">El DNI debe contener exactamente 8 dígitos.</small>
+  }
+
+  @if (
+    clientForm.controls.documentNumber.hasError('pattern') &&
+    clientForm.controls.type.value === 'EMPRESA'
+  ) {
+    <small class="field-error">El RUC debe contener exactamente 11 dígitos.</small>
+  }
+}
+
+@if (clientForm.controls.type.value === 'PERSONA') {
+
+  <label for="name">Nombre completo</label>
+
+  <input
+    id="name"
+    type="text"
+    formControlName="name"
+  >
+
+}
+
+@if (clientForm.controls.type.value === 'EMPRESA') {
+
+  <label for="businessName">Razón social</label>
+
+  <input
+    id="businessName"
+    type="text"
+    formControlName="businessName"
+  >
+
+}
+  </fieldset>
+
+  <fieldset>
+    <legend>Ubicación</legend>
+
+    <label for="address">Dirección</label>
+    <input
+      id="address"
+      type="text"
+      formControlName="address"
+    >
+
+    <label for="department">Departamento</label>
+    <input
+      id="department"
+      type="text"
+      formControlName="department"
+    >
+
+    <label for="province">Provincia</label>
+    <input
+      id="province"
+      type="text"
+      formControlName="province"
+    >
+
+    <label for="district">Distrito</label>
+    <input
+      id="district"
+      type="text"
+      formControlName="district"
+    >
+  </fieldset>
+
+  <fieldset>
+    <legend>Contacto</legend>
+
+    <label for="email">Correo electrónico</label>
+    <input
+      id="email"
+      type="email"
+      formControlName="email"
+    >
+
+    @if (
+      clientForm.controls.email.invalid &&
+      clientForm.controls.email.touched
+    ) {
+      <small>Ingrese un correo electrónico válido.</small>
+    }
+
+    <label for="phone">Teléfono</label>
+    <input
+      id="phone"
+      type="text"
+      formControlName="phone"
+    >
+  </fieldset>
+
+  <div class="form-actions">
+    <button type="submit">
+      GUARDAR
+    </button>
+
+    <button
+      type="button"
+      (click)="goBack()">
+      VOLVER
+    </button>
+  </div>
+
+</form>
