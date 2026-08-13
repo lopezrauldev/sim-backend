@@ -35,7 +35,7 @@ public class MaterialController {
         return ResponseEntity.ok(materialService.findAll());
     }
 
-    @GetMapping("/id")
+    @GetMapping("/{id}")
     public ResponseEntity<MaterialResponse> findById(@PathVariable UUID id) {
         return ResponseEntity.ok(materialService.findById(id));
     }

@@ -48,17 +48,15 @@ public class ClientRepositoryAdapter implements ClientRepository {
                 .toList();
     }
 
-    @Override
-    public void deleteById(UUID id) {
-        springDataRepository.deleteById(id);
-    }
+    //@Override
+    //public void deleteById(UUID id) {
+        //springDataRepository.deleteById(id);
+    //}
 
     @Override
     public boolean existsByDocumentNumber(String documentNumber) {
         return springDataRepository.existsByDocumentNumber(documentNumber);
     }
-
-
 }
 
 

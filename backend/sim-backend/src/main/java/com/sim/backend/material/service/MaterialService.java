@@ -78,11 +78,13 @@ public class MaterialService {
     }
 
     public void delete(UUID id) {
-        if (materialRepository.findById(id).isEmpty()) {
-            throw new IllegalArgumentException(
-                    "No existe un material con el id: " + id
-            );
-        }
-        materialRepository.deleteById(id);
+        Material material = materialRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "No existe un material con el id: " + id
+                ));
+
+        material.deactivate();
+
+        materialRepository.save(material);
     }
 }

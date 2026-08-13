@@ -81,44 +81,40 @@ public class ClientServiceImpl implements ClientService {
         return clientMapper.toResponse(updatedClient);
     }
 
-        @Override
-        @Transactional(readOnly = true)
-        public ClientResponse findById(UUID id){
-            Client client = findClientById(id);
-            return clientMapper.toResponse(client);
-        }
+    @Override
+    @Transactional(readOnly = true)
+    public ClientResponse findById(UUID id){
+        Client client = findClientById(id);
+        return clientMapper.toResponse(client);
+    }
 
-        @Override
-        @Transactional(readOnly = true)
-        public List<ClientResponse> findAll() {
-            return clientRepository.findAll()
-                    .stream()
-                    .map(clientMapper::toResponse)
-                    .toList();
-        }
+    @Override
+    @Transactional(readOnly = true)
+    public List<ClientResponse> findAll() {
+        return clientRepository.findAll()
+                .stream()
+                .map(clientMapper::toResponse)
+                .toList();
+    }
 
-        @Override
-        public void delete(UUID id){
-            Client client = findClientById(id);
-            client.deactivate();
-            clientRepository.save(client);
-        }
+    @Override
+    public void delete(UUID id){
+        Client client = findClientById(id);
+        client.deactivate();
+        clientRepository.save(client);
+    }
 
     private Client findClientById(UUID id) {
         return clientRepository.findById(id)
                 .orElseThrow(() -> new ClientNotFoundException(id));
     }
 
+    private String normalizeDocument (String documentNumber){
 
-        private String normalizeDocument (String documentNumber){
-
-            return documentNumber == null
-                    ? ""
-                    : documentNumber.trim();
-        }
-
-
-
+        return documentNumber == null
+                ? ""
+                : documentNumber.trim();
+    }
 }
 
 

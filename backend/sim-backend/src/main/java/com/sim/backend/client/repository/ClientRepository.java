@@ -14,7 +14,7 @@ public interface ClientRepository {
 
     List<Client> findAll();
 
-    void deleteById(UUID id);
+    //void deleteById(UUID id);
 
     boolean existsByDocumentNumber(String documentNumber);
 
