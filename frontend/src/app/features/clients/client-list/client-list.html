@@ -1,24 +1,87 @@
-<h1>Clientes</h1>
+<div class="clients-container">
 
-<a routerLink="/clients/new">Nuevo cliente</a>
+  <div class="clients-header">
+    <div>
+      <h1>Clientes</h1>
+      <p>Gestión de clientes registrados en SIGO</p>
+    </div>
 
-@for (client of clients(); track client.id) {
-  <div>
-    <strong>{{ client.documentNumber }}</strong>
-    -
-    {{ client.name || client.businessName }}
-
-    <button
-      type="button"
-      [routerLink]="['/clients', client.id, 'edit']">
-      EDITAR
-    </button>
-    <button
-      type="button"
-      (click)="deactivateClient(client.id)">
-      DESACTIVAR
-    </button>
+    <a routerLink="/clients/new" class="btn-new">
+      + Nuevo cliente
+    </a>
   </div>
-} @empty {
-  <p>No hay clientes registrados.</p>
-}
+
+  <div class="table-card">
+    <table class="clients-table">
+
+      <thead>
+        <tr>
+          <th>Documento</th>
+          <th>Cliente</th>
+          <th>Tipo</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (client of clients(); track client.id) {
+          <tr>
+
+            <td>
+              <strong>{{ client.documentNumber }}</strong>
+            </td>
+
+            <td>
+              {{ client.name || client.businessName }}
+            </td>
+
+            <td>
+              {{ client.type }}
+            </td>
+
+            <td>
+              @if (client.active) {
+                <span class="status active">
+                  Activo
+                </span>
+              } @else {
+                <span class="status inactive">
+                  Inactivo
+                </span>
+              }
+            </td>
+
+            <td class="actions">
+              <button
+                type="button"
+                class="btn-edit"
+                [routerLink]="['/clients', client.id, 'edit']">
+                Editar
+              </button>
+
+              @if (client.active) {
+                <button
+                  type="button"
+                  class="btn-deactivate"
+                  (click)="deactivateClient(client.id)">
+                  Desactivar
+                </button>
+              }
+            </td>
+
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="empty-message">
+              No hay clientes registrados.
+            </td>
+          </tr>
+        }
+      </tbody>
+
+    </table>
+  </div>
+
+</div>
+

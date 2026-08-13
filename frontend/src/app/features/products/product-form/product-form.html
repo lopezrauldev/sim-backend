@@ -1,0 +1,144 @@
+<div class="product-form-container">
+
+  <div class="form-header">
+    <h1>
+      {{ productId ? 'Editar producto' : 'Nuevo producto' }}
+    </h1>
+
+    <p>
+      Registro y actualización de productos y servicios de SIGO
+    </p>
+  </div>
+
+  <form
+    [formGroup]="productForm"
+    (ngSubmit)="save()"
+    class="product-form">
+
+    <fieldset>
+      <legend>Datos del producto</legend>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="code">Código</label>
+
+          <input
+            id="code"
+            type="text"
+            formControlName="code">
+
+          @if (
+            productForm.controls.code.touched &&
+            productForm.controls.code.invalid
+          ) {
+            <small class="error">
+              El código es obligatorio y no puede superar los 30 caracteres.
+            </small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="name">Nombre</label>
+
+          <input
+            id="name"
+            type="text"
+            formControlName="name">
+
+          @if (
+            productForm.controls.name.touched &&
+            productForm.controls.name.invalid
+          ) {
+            <small class="error">
+              El nombre es obligatorio y no puede superar los 150 caracteres.
+            </small>
+          }
+        </div>
+
+        <div class="form-group full-width">
+          <label for="description">Descripción</label>
+
+          <textarea
+            id="description"
+            rows="4"
+            formControlName="description">
+          </textarea>
+
+          @if (
+            productForm.controls.description.touched &&
+            productForm.controls.description.invalid
+          ) {
+            <small class="error">
+              La descripción no puede superar los 300 caracteres.
+            </small>
+          }
+        </div>
+
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Unidad y precio</legend>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="unit">Unidad</label>
+
+          <select
+            id="unit"
+            formControlName="unit">
+
+            @for (unit of units; track unit) {
+              <option [value]="unit">
+                {{ unit }}
+              </option>
+            }
+
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="unitPrice">Precio unitario</label>
+
+          <input
+            id="unitPrice"
+            type="number"
+            min="0"
+            step="0.01"
+            formControlName="unitPrice">
+
+          @if (
+            productForm.controls.unitPrice.touched &&
+            productForm.controls.unitPrice.invalid
+          ) {
+            <small class="error">
+              El precio unitario debe ser mayor o igual a 0.
+            </small>
+          }
+        </div>
+
+      </div>
+    </fieldset>
+
+    <div class="form-actions">
+
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="goBack()">
+        Volver
+      </button>
+
+      <button
+        type="submit"
+        class="btn-primary">
+        {{ productId ? 'Actualizar' : 'Guardar' }}
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

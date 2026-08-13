@@ -1,0 +1,45 @@
+.sidebar {
+  width: 230px;
+  min-height: 100vh;
+  background-color: #1f4e3d;
+  color: white;
+  padding: 24px 18px;
+}
+
+.brand {
+  margin-bottom: 40px;
+}
+
+.brand h2 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.brand span {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 11px 14px;
+  border-radius: 6px;
+  opacity: 0.85;
+}
+
+nav a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+nav a.active {
+  background-color: rgba(255, 255, 255, 0.18);
+  opacity: 1;
+  font-weight: 600;
+}

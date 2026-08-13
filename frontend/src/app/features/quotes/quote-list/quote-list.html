@@ -1,0 +1,124 @@
+<div class="quotes-container">
+
+  <div class="quotes-header">
+    <div>
+      <h1>Cotizaciones</h1>
+      <p>Gestión y seguimiento de cotizaciones de SIGO</p>
+    </div>
+
+    <a
+      routerLink="/quotes/new"
+      class="btn-new">
+      + Nueva cotización
+    </a>
+  </div>
+
+  <div class="table-card">
+
+    <table class="quotes-table">
+
+      <thead>
+        <tr>
+          <th>Número</th>
+          <th>Cliente</th>
+          <th>Fecha</th>
+          <th>Subtotal</th>
+          <th>GG + Utilidad</th>
+          <th>Total</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        @for (quote of quotes(); track quote.id) {
+
+          <tr>
+
+            <td>
+              <strong>{{ quote.number }}</strong>
+            </td>
+
+            <td>
+              {{ getClientName(quote.clientId) }}
+            </td>
+
+            <td>
+              {{ quote.date }}
+            </td>
+
+            <td>
+              S/ {{ quote.subtotal }}
+            </td>
+
+            <td>
+              S/ {{ quote.generalExpensesAndProfit }}
+            </td>
+
+            <td class="total">
+              S/ {{ quote.total }}
+            </td>
+
+            <td>
+              @if (quote.status === 'SAVED') {
+                <span class="status saved">
+                  Guardada
+                </span>
+              } @else {
+                <span class="status canceled">
+                  Cancelada
+                </span>
+              }
+            </td>
+
+            <td class="actions">
+
+              <button
+                type="button"
+                class="btn-view"
+                [routerLink]="['/quotes', quote.id]">
+                Ver
+              </button>
+
+              @if (quote.status === 'SAVED') {
+
+                <button
+                  type="button"
+                  class="btn-edit"
+                  [routerLink]="['/quotes', quote.id, 'edit']">
+                  Editar
+                </button>
+
+                <button
+                  type="button"
+                  class="btn-cancel"
+                  (click)="cancelQuote(quote.id)">
+                  Cancelar
+                </button>
+
+              }
+
+            </td>
+
+          </tr>
+
+        } @empty {
+
+          <tr>
+            <td
+              colspan="8"
+              class="empty-message">
+              No hay cotizaciones registradas.
+            </td>
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

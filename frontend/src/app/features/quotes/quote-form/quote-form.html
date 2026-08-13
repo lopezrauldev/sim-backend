@@ -1,0 +1,245 @@
+<div class="quote-container">
+
+  <div class="page-header">
+    <div>
+      <button type="button" class="btn-back" (click)="goBack()">
+        ← Volver
+      </button>
+
+      <h1>
+        {{ quoteId ? 'Editar cotización' : 'Nueva cotización' }}
+      </h1>
+      <p>
+        @if (quoteId) {
+        Modifica las partidas de la cotización
+        } @else {
+        Registra los productos y cantidades de la cotización
+        }
+      </p>
+    </div>
+  </div>
+
+
+  <form [formGroup]="quoteForm" (ngSubmit)="save()">
+
+    <!-- CLIENTE -->
+
+    <div class="card">
+
+      <h2>Cliente</h2>
+
+      <div class="form-group">
+
+        <label for="clientId">
+          Cliente
+        </label>
+
+        <select id="clientId" formControlName="clientId" [attr.disabled]="quoteId ? true : null">
+
+          <option value="">
+            Seleccione un cliente
+          </option>
+
+          @for (client of clients(); track client.id) {
+
+          <option [value]="client.id">
+            {{ client.documentNumber }}
+            -
+            {{ client.name || client.businessName }}
+          </option>
+
+          }
+
+        </select>
+
+        @if (
+        quoteForm.controls.clientId.touched &&
+        quoteForm.controls.clientId.invalid
+        ) {
+        <small class="error">
+          Seleccione un cliente.
+        </small>
+        }
+
+      </div>
+
+    </div>
+
+
+    <!-- PARTIDAS -->
+
+    <div class="card">
+
+      <div class="section-header">
+
+        <div>
+          <h2>Partidas</h2>
+          <p>
+            Productos y servicios incluidos en la cotización.
+          </p>
+        </div>
+
+        <button type="button" class="btn-add" (click)="addItem()">
+          + Agregar partida
+        </button>
+
+      </div>
+
+
+      <div formArrayName="items" class="table-wrapper">
+
+        <table class="items-table">
+
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Unidad</th>
+              <th>Cantidad</th>
+              <th>Precio</th>
+              <th>Subtotal</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            @for (
+            item of items.controls;
+            track item;
+            let i = $index
+            ) {
+
+            <tr [formGroupName]="i">
+
+              <td>
+
+                <select formControlName="productId">
+
+                  <option value="">
+                    Seleccione un producto
+                  </option>
+
+                  @for (
+                  product of products();
+                  track product.id
+                  ) {
+
+                  <option [value]="product.id">
+                    {{ product.code }}
+                    -
+                    {{ product.name }}
+                  </option>
+
+                  }
+
+                </select>
+
+              </td>
+
+              <td>
+                @if (
+                getProduct(
+                item.get('productId')?.value
+                );
+                as product
+                ) {
+                {{ product.unit }}
+                } @else {
+                -
+                }
+              </td>
+
+              <td>
+
+                <input type="number" formControlName="quantity" min="0.01" step="0.01">
+
+              </td>
+
+              <td>
+                @if (
+                getProduct(
+                item.get('productId')?.value
+                );
+                as product
+                ) {
+                S/ {{ product.unitPrice }}
+                } @else {
+                -
+                }
+              </td>
+
+              <td class="subtotal">
+                S/ {{ getItemSubtotal(i).toFixed(2) }}
+              </td>
+
+              <td>
+
+                <button type="button" class="btn-remove" [disabled]="items.length === 1" (click)="removeItem(i)">
+                  Retirar
+                </button>
+
+              </td>
+
+            </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- RESUMEN -->
+
+    <div class="summary-card">
+
+      <div class="summary">
+
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>
+            S/ {{ getSubtotal().toFixed(2) }}
+          </span>
+        </div>
+
+        <div class="summary-row">
+          <span>GG + Utilidad (10%)</span>
+          <span>
+            S/
+            {{ getGeneralExpensesAndProfit().toFixed(2) }}
+          </span>
+        </div>
+
+        <div class="summary-row total">
+          <span>Total</span>
+          <span>
+            S/ {{ getTotal().toFixed(2) }}
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ACCIONES -->
+
+    <div class="form-actions">
+
+      <button type="submit" class="btn-primary">
+
+        {{ quoteId
+        ? 'Actualizar cotización'
+        : 'Guardar cotización' }}
+
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

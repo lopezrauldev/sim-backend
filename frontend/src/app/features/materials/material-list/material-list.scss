@@ -1,24 +1,24 @@
-.clients-container {
-  max-width: 1200px;
+.materials-container {
+  max-width: 1400px;
   margin: 40px auto;
   padding: 0 24px;
 }
 
-.clients-header {
+.materials-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-}
 
-.clients-header h1 {
-  margin: 0;
-  font-size: 30px;
-}
+  h1 {
+    margin: 0;
+    font-size: 30px;
+  }
 
-.clients-header p {
-  margin: 6px 0 0;
-  color: #6b7280;
+  p {
+    margin: 6px 0 0;
+    color: #6b7280;
+  }
 }
 
 .btn-new {
@@ -29,10 +29,10 @@
   text-decoration: none;
   border-radius: 6px;
   font-weight: 600;
-}
 
-.btn-new:hover {
-  background-color: #173d30;
+  &:hover {
+    background-color: #173d30;
+  }
 }
 
 .table-card {
@@ -42,28 +42,28 @@
   overflow: hidden;
 }
 
-.clients-table {
+.materials-table {
   width: 100%;
   border-collapse: collapse;
-}
 
-.clients-table thead {
-  background-color: #f3f4f6;
-}
+  thead {
+    background-color: #f3f4f6;
+  }
 
-.clients-table th {
-  text-align: left;
-  padding: 14px 16px;
-  font-size: 14px;
-}
+  th {
+    text-align: left;
+    padding: 14px 16px;
+    font-size: 14px;
+  }
 
-.clients-table td {
-  padding: 14px 16px;
-  border-top: 1px solid #e5e7eb;
-}
+  td {
+    padding: 14px 16px;
+    border-top: 1px solid #e5e7eb;
+  }
 
-.clients-table tbody tr:hover {
-  background-color: #fafafa;
+  tbody tr:hover {
+    background-color: #fafafa;
+  }
 }
 
 .status {
@@ -72,46 +72,46 @@
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
-}
 
-.status.active {
-  background-color: #dcfce7;
-  color: #166534;
-}
+  &.active {
+    background-color: #dcfce7;
+    color: #166534;
+  }
 
-.status.inactive {
-  background-color: #fee2e2;
-  color: #991b1b;
+  &.inactive {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
 }
 
 .actions {
   display: flex;
   gap: 8px;
-}
 
-.actions button {
-  border: none;
-  padding: 7px 12px;
-  border-radius: 5px;
-  cursor: pointer;
+  button {
+    border: none;
+    padding: 7px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 }
 
 .btn-edit {
   background-color: #e5e7eb;
   color: #111827;
-}
 
-.btn-edit:hover {
-  background-color: #d1d5db;
+  &:hover {
+    background-color: #d1d5db;
+  }
 }
 
 .btn-deactivate {
   background-color: #fee2e2;
   color: #991b1b;
-}
 
-.btn-deactivate:hover {
-  background-color: #fecaca;
+  &:hover {
+    background-color: #fecaca;
+  }
 }
 
 .empty-message {

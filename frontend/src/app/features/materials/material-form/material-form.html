@@ -1,0 +1,219 @@
+<div class="material-form-container">
+
+  <div class="form-header">
+    <div>
+      <h1>
+        {{ materialId ? 'Editar material' : 'Nuevo material' }}
+      </h1>
+
+      <p>
+        Registro y actualización de materiales de SIGO
+      </p>
+    </div>
+  </div>
+
+  <form
+    [formGroup]="materialForm"
+    (ngSubmit)="save()"
+    class="material-form">
+
+    <fieldset>
+      <legend>Datos principales</legend>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="code">Código</label>
+
+          <input
+            id="code"
+            type="text"
+            formControlName="code">
+
+          @if (
+            materialForm.controls.code.touched &&
+            materialForm.controls.code.invalid
+          ) {
+            <small class="error">
+              El código es obligatorio.
+            </small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="name">Nombre</label>
+
+          <input
+            id="name"
+            type="text"
+            formControlName="name">
+
+          @if (
+            materialForm.controls.name.touched &&
+            materialForm.controls.name.invalid
+          ) {
+            <small class="error">
+              El nombre es obligatorio.
+            </small>
+          }
+        </div>
+
+        <div class="form-group full-width">
+          <label for="description">Descripción</label>
+
+          <textarea
+            id="description"
+            rows="3"
+            formControlName="description">
+          </textarea>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="supplier">Proveedor</label>
+
+          <input
+            id="supplier"
+            type="text"
+            formControlName="supplier">
+        </div>
+
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Clasificación</legend>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="category">Categoría</label>
+
+          <select
+            id="category"
+            formControlName="category">
+
+            @for (category of categories; track category) {
+              <option [value]="category">
+                {{ category }}
+              </option>
+            }
+
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="unit">Unidad</label>
+
+          <select
+            id="unit"
+            formControlName="unit">
+
+            @for (unit of units; track unit) {
+              <option [value]="unit">
+                {{ unit }}
+              </option>
+            }
+
+          </select>
+        </div>
+
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Medidas</legend>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="weight">Peso</label>
+
+          <input
+            id="weight"
+            type="number"
+            step="0.001"
+            min="0"
+            formControlName="weight">
+        </div>
+
+        <div class="form-group">
+          <label for="dimensions">Dimensiones</label>
+
+          <input
+            id="dimensions"
+            type="text"
+            placeholder="Ej. 1.22 m x 2.44 m"
+            formControlName="dimensions">
+        </div>
+
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Precio y stock</legend>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="unitPrice">Precio unitario</label>
+
+          <input
+            id="unitPrice"
+            type="number"
+            step="0.01"
+            min="0"
+            formControlName="unitPrice">
+
+          @if (
+            materialForm.controls.unitPrice.touched &&
+            materialForm.controls.unitPrice.invalid
+          ) {
+            <small class="error">
+              El precio debe ser mayor o igual a 0.
+            </small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="stock">Stock</label>
+
+          <input
+            id="stock"
+            type="number"
+            step="0.001"
+            min="0"
+            formControlName="stock">
+
+          @if (
+            materialForm.controls.stock.touched &&
+            materialForm.controls.stock.invalid
+          ) {
+            <small class="error">
+              El stock debe ser mayor o igual a 0.
+            </small>
+          }
+        </div>
+
+      </div>
+    </fieldset>
+
+    <div class="form-actions">
+
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="goBack()">
+        Volver
+      </button>
+
+      <button
+        type="submit"
+        class="btn-primary">
+        {{ materialId ? 'Actualizar' : 'Guardar' }}
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

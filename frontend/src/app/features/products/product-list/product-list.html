@@ -1,0 +1,107 @@
+<div class="products-container">
+
+  <div class="products-header">
+    <div>
+      <h1>Productos</h1>
+      <p>Gestión de productos y servicios registrados en SIGO</p>
+    </div>
+
+    <a routerLink="/products/new" class="btn-new">
+      + Nuevo producto
+    </a>
+  </div>
+
+  <div class="table-card">
+
+    <table class="products-table">
+
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Producto</th>
+          <th>Unidad</th>
+          <th>Precio</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        @for (product of products(); track product.id) {
+
+        <tr>
+
+          <td>
+            <strong>{{ product.code }}</strong>
+          </td>
+
+          <td>
+            {{ product.name }}
+          </td>
+
+          <td>
+            {{ product.unit }}
+          </td>
+
+          <td>
+            S/ {{ product.unitPrice }}
+          </td>
+
+          <td>
+            @if (product.active) {
+            <span class="status active">
+              Activo
+            </span>
+            } @else {
+            <span class="status inactive">
+              Inactivo
+            </span>
+            }
+          </td>
+
+          <td class="actions">
+
+            <button type="button" class="btn-edit" [routerLink]="['/products', product.id, 'edit']">
+              Editar
+            </button>
+
+            <button type="button" class="btn-materials" [routerLink]="['/products', product.id, 'materials']">
+              Materiales
+            </button>
+
+            @if (product.active) {
+
+            <button type="button" class="btn-deactivate" (click)="deactivateProduct(product.id)">
+              Desactivar
+            </button>
+
+            } @else {
+
+            <button type="button" class="btn-activate" (click)="activateProduct(product.id)">
+              Reactivar
+            </button>
+
+            }
+
+          </td>
+
+        </tr>
+
+        } @empty {
+
+        <tr>
+          <td colspan="6" class="empty-message">
+            No hay productos registrados.
+          </td>
+        </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

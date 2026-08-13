@@ -1,0 +1,204 @@
+<div class="quote-detail-container">
+
+  <button
+    type="button"
+    class="btn-back"
+    (click)="goBack()">
+    ← Volver
+  </button>
+
+  @if (quote(); as currentQuote) {
+
+    <div class="detail-header">
+
+      <div>
+        <h1>{{ currentQuote.number }}</h1>
+
+        <p>
+          {{ getClientName() }}
+          · {{ currentQuote.date }}
+        </p>
+      </div>
+
+      <div>
+        @if (currentQuote.status === 'SAVED') {
+          <span class="status saved">
+            Guardada
+          </span>
+        } @else {
+          <span class="status canceled">
+            Cancelada
+          </span>
+        }
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="section-header">
+        <h2>Partidas</h2>
+      </div>
+
+      <div class="table-wrapper">
+
+        <table class="detail-table">
+
+          <thead>
+            <tr>
+              <th>Descripción</th>
+              <th>Unidad</th>
+              <th>Cantidad</th>
+              <th>Precio unitario</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            @for (item of currentQuote.items; track item.id) {
+
+              <tr>
+
+                <td>
+                  {{ item.description }}
+                </td>
+
+                <td>
+                  {{ item.unit }}
+                </td>
+
+                <td>
+                  {{ item.quantity }}
+                </td>
+
+                <td>
+                  S/ {{ item.unitPrice.toFixed(2) }}
+                </td>
+
+                <td class="money">
+                  S/ {{ item.subtotal.toFixed(2) }}
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary">
+
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>
+            S/ {{ currentQuote.subtotal.toFixed(2) }}
+          </span>
+        </div>
+
+        <div class="summary-row">
+          <span>GG + Utilidad</span>
+          <span>
+            S/
+            {{ currentQuote.generalExpensesAndProfit.toFixed(2) }}
+          </span>
+        </div>
+
+        <div class="summary-row total">
+          <span>Total</span>
+          <span>
+            S/ {{ currentQuote.total.toFixed(2) }}
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="section-header">
+
+        <div>
+          <h2>Materiales requeridos</h2>
+
+          <p>
+            Cantidades calculadas a partir de la composición
+            de los productos incluidos en la cotización.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="table-wrapper">
+
+        <table class="detail-table">
+
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Material</th>
+              <th>Unidad</th>
+              <th>Cantidad requerida</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            @for (material of materials(); track material.materialId) {
+
+              <tr>
+
+                <td>
+                  <strong>
+                    {{ material.materialCode }}
+                  </strong>
+                </td>
+
+                <td>
+                  {{ material.materialName }}
+                </td>
+
+                <td>
+                  {{ material.materialUnit }}
+                </td>
+
+                <td class="quantity">
+                  {{ material.requiredQuantity }}
+                </td>
+
+              </tr>
+
+            } @empty {
+
+              <tr>
+                <td
+                  colspan="4"
+                  class="empty-message">
+                  No hay materiales calculados para esta cotización.
+                </td>
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

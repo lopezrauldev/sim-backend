@@ -1,0 +1,111 @@
+<div class="materials-container">
+
+  <div class="materials-header">
+    <div>
+      <h1>Materiales</h1>
+      <p>Gestión de materiales registrados en SIGO</p>
+    </div>
+
+    <a routerLink="/materials/new" class="btn-new">
+      + Nuevo material
+    </a>
+  </div>
+
+  <div class="table-card">
+
+    <table class="materials-table">
+
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Material</th>
+          <th>Categoría</th>
+          <th>Unidad</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        @for (material of materials(); track material.id) {
+
+          <tr>
+
+            <td>
+              <strong>{{ material.code }}</strong>
+            </td>
+
+            <td>
+              {{ material.name }}
+            </td>
+
+            <td>
+              {{ material.category }}
+            </td>
+
+            <td>
+              {{ material.unit }}
+            </td>
+
+            <td>
+              S/ {{ material.unitPrice }}
+            </td>
+
+            <td>
+              {{ material.stock }}
+            </td>
+
+            <td>
+              @if (material.active) {
+                <span class="status active">
+                  Activo
+                </span>
+              } @else {
+                <span class="status inactive">
+                  Inactivo
+                </span>
+              }
+            </td>
+
+            <td class="actions">
+
+              <button
+                type="button"
+                class="btn-edit"
+                [routerLink]="['/materials', material.id, 'edit']">
+                Editar
+              </button>
+
+              @if (material.active) {
+                <button
+                  type="button"
+                  class="btn-deactivate"
+                  (click)="deleteMaterial(material.id)">
+                  Desactivar
+                </button>
+              }
+
+            </td>
+
+          </tr>
+
+        } @empty {
+
+          <tr>
+            <td colspan="8" class="empty-message">
+              No hay materiales registrados.
+            </td>
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
